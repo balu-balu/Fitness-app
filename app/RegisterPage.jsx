@@ -1,103 +1,115 @@
-import { View, Text, TextInput, Button, Alert, StyleSheet } from "react-native";
-import React from "react";
-import AntDesign from "react-native-vector-icons/AntDesign";
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Image } from 'react-native';
 import { useRouter } from "expo-router";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
-import { TouchableOpacity } from "react-native-gesture-handler";
-export default function RegisterPage() {
+
+const RegisterPage = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const router = useRouter();
+  
+  const handleRegister = () => {
+    // Implement registration functionality here
+    console.log('Registering with:', email, password);
+  };
+
   return (
-    <View style={styles.container}>
-      <View>
-        <Text style={styles.Text} className="font-bold ">
-          Register
-        </Text>
-      </View>
-      <View className=" items-center justify-center flex-1 ">
-        <TextInput
-          style={styles.input}
-          placeholder="Username"
-          placeholderTextColor={"white"}
-          className="font-light"
-        ></TextInput>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          placeholderTextColor={"white"}
-          className="font-light"
-        ></TextInput>
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          placeholderTextColor={"white"}
-          className="font-light"
-        ></TextInput>
-      </View>
-      <View className=" flex-1" style={{ justifyContent: "center" }}>
-        <View
-          style={{
-            justifyContent: "space-between",
-            marginHorizontal: 50,
-          }}
-          className=" flex-row items-center justify-center"
-        >
-          <Text
-            style={{ fontSize: hp(3), color: "white", marginRight: 10 }}
-            className="font-white"
-          >
-            Sign up
-          </Text>
-          <TouchableOpacity
-            onPress={() => router.push("Home")}
-            style={{ marginTop: 20 }}
-          >
-            <AntDesign
-              name="arrowright"
-              size={10}
-              color="white"
-              style={styles.icon}
-            />
+    <ImageBackground
+      source={require('../assets/images/background2.png')}
+      style={styles.background}
+      resizeMode="cover"
+    >
+      <View style={styles.container}>
+        <Image
+          style={styles.logo}
+        />
+        <View style={styles.form}>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            onChangeText={setEmail}
+            value={email}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            onChangeText={setPassword}
+            value={password}
+            secureTextEntry
+          />
+          <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
+            <Text style={styles.registerButtonText}>Register</Text>
           </TouchableOpacity>
-        </View>
-
-        <View style={{ marginLeft: 50, marginTop: 40 }}>
-          <TouchableOpacity onPress={() => router.push("LoginPage")}>
-            <Text className="font-light color-white">Sign in</Text>
+          <TouchableOpacity style={styles.backButton} onPress={() => router.push("LoginPage")}>
+            <Text style={styles.backButtonText}>Back to Login</Text>
           </TouchableOpacity>
         </View>
       </View>
-
-      {/* <input placeholder="Email"></input> */}
-    </View>
+    </ImageBackground>
   );
-}
+};
+
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
-    paddingTop: hp(20),
-
-    backgroundColor: "black",
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    width: '100%',
+    padding: 20,
+  },
+  logo: {
+    width: 150,
+    height: 150,
+    marginBottom: 30,
+    borderRadius: 90,
+  },
+  form: {
+    width: '100%',
   },
   input: {
-    width: "75%",
-    borderBottomColor: "white",
-    paddingVertical: 20,
+    width: '100%',
+    height: 40,
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 20,
+  },
+  registerButton: {
+    width: '100%',
+    height: 40,
+    backgroundColor: "#C72222",
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  registerButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  backButton: {
+    width: '100%',
+    height: 40,
+    backgroundColor: 'transparent',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+    borderColor: "#C72222",
     borderWidth: 1,
-    marginVertical: 20,
   },
-  Text: {
-    fontSize: hp(4),
-    color: "white",
-    marginLeft: 50,
-  },
-  icon: {
-    backgroundColor: "red",
-    borderRadius: 90,
-    padding: 20,
-    width: hp(7.4),
-    fontSize: hp(3),
+  backButtonText: {
+    color: "#C72222",
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
+
+export default RegisterPage;

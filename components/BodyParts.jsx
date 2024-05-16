@@ -11,13 +11,8 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 export default function BodyParts() {
   const router = useRouter();
   return (
-    <View className="mx-4">
-      <Text
-        style={{ fontSize: hp(3) }}
-        className="font-semibold text-neutral-700"
-      >
-        Exercises
-      </Text>
+    <View className="mx-3" style={{marginTop: 20}}>
+    
       <FlatList
         data={bodyParts}
         numColumns={2}
@@ -43,7 +38,7 @@ const BodyPartCard = ({ item, router, index }) => {
         <Image
           source={item.image}
           resizeMode="cover"
-          style={{ width: wp(44), height: wp(52) }}
+          style={{ width: wp(44), height: wp(50) }}
           className="rounded-[35px] absolute"
         />
         <LinearGradient

@@ -1,97 +1,114 @@
-import { View, Text, TextInput, Button, Alert, StyleSheet } from "react-native";
-import React from "react";
-import AntDesign from "react-native-vector-icons/AntDesign";
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Image } from 'react-native';
 import { useRouter } from "expo-router";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
-import { TouchableOpacity } from "react-native-gesture-handler";
-export default function LoginPage() {
+const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const router = useRouter();
   return (
-    <View style={styles.container}>
-      <View>
-        <Text style={styles.Text} className="font-bold ">
-          Welcome
-        </Text>
-      </View>
-      <View className=" items-center justify-center flex-1 ">
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          placeholderTextColor={"white"}
-          className="font-light"
-        ></TextInput>
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          placeholderTextColor={"white"}
-          className="font-light"
-        ></TextInput>
-      </View>
-      <View className=" flex-1" style={{ justifyContent: "center" }}>
-        <View
-          style={{
-            justifyContent: "space-between",
-            marginHorizontal: 50,
-          }}
-          className=" flex-row items-center justify-center"
-        >
-          <Text
-            style={{ fontSize: hp(3), color: "white", marginRight: 10 }}
-            className="font-white"
-          >
-            Sign in
-          </Text>
-          <TouchableOpacity
-            onPress={() => router.push("Home")}
-            style={{ marginTop: 20 }}
-          >
-            <AntDesign
-              name="arrowright"
-              size={10}
-              color="white"
-              style={styles.icon}
-            />
+    <ImageBackground
+      source={require('../assets/images/background2.png')}
+      style={styles.background}
+      resizeMode="cover"
+    >
+      <View style={styles.container}>
+        <Image
+          
+          style={styles.logo}
+        />
+        <View style={styles.form}>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            onChangeText={setEmail}
+            value={email}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            onChangeText={setPassword}
+            value={password}
+            secureTextEntry
+          />
+          <TouchableOpacity style={styles.loginButton} onPress={() => router.push("AuthHome")}>
+            <Text style={styles.loginButtonText}>Login</Text>
           </TouchableOpacity>
-        </View>
-
-        <View style={{ marginLeft: 50, marginTop: 40 }}>
-          <TouchableOpacity onPress={() => router.push("RegisterPage")}>
-            <Text className="font-light color-white">Sign up</Text>
+          <TouchableOpacity style={styles.signupButton} onPress={() => router.push("RegisterPage")}>
+            <Text style={styles.signupButtonText}>Sign Up</Text>
           </TouchableOpacity>
         </View>
       </View>
-
-      {/* <input placeholder="Email"></input> */}
-    </View>
+    </ImageBackground>
   );
-}
+};
+
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Adjust opacity here (0.5 = 50% opacity)
+  },
   container: {
     flex: 1,
-    paddingTop: hp(20),
-
-    backgroundColor: "black",
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    width: '100%',
+    padding: 20,
+  },
+  logo: {
+    width: 150,
+    height: 150,
+    marginBottom: 30,
+    borderRadius: 90,
+    opacity: 5
+  },
+  form: {
+    width: '100%',
   },
   input: {
-    width: "75%",
-    borderBottomColor: "white",
-    paddingVertical: 20,
+    width: '100%',
+    height: 40,
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 20,
+  },
+  loginButton: {
+    width: '100%',
+    height: 40,
+    backgroundColor: "#C72222",
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  loginButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  signupButton: {
+    width: '100%',
+    height: 40,
+    backgroundColor: 'transparent',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+    borderColor: "#C72222",
     borderWidth: 1,
-    marginVertical: 40,
   },
-  Text: {
-    fontSize: hp(4),
-    color: "white",
-    marginLeft: 50,
-  },
-  icon: {
-    backgroundColor: "red",
-    borderRadius: 90,
-    padding: 20,
-    width: hp(7.4),
-    fontSize: hp(3),
+  signupButtonText: {
+    color: "#C72222",
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
+
+export default Login;
