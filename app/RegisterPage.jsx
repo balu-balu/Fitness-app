@@ -1,17 +1,27 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Image,Alert } from 'react-native';
 import { useRouter } from "expo-router";
-
+import {auth} from "../firebase-config"
+import {createUserWithEmailAndPassword} from "firebase/auth"
 const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
   
-  const handleRegister = () => {
-    // Implement registration functionality here
-    console.log('Registering with:', email, password);
-  };
+  const handleSignUp = async () => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      Alert.alert("Бүртгэл амжилттай боллоо", "Та амжилттай бүртгүүллээ!");
 
+      router.push("RegisterPage");
+    } catch (error) {
+      Alert.alert("Бүртгэл амжилтгүй боллоо", error.message);
+    }
+  };
   return (
     <ImageBackground
       source={require('../assets/images/background2.png')}
@@ -26,7 +36,9 @@ const RegisterPage = () => {
           <TextInput
             style={styles.input}
             placeholder="Email"
-            onChangeText={setEmail}
+            onChangeText={(email) => {
+              setEmail(email);
+            }}
             value={email}
             keyboardType="email-address"
             autoCapitalize="none"
@@ -34,11 +46,13 @@ const RegisterPage = () => {
           <TextInput
             style={styles.input}
             placeholder="Password"
-            onChangeText={setPassword}
+            onChangeText={(password) => {
+              setPassword(password);
+            }}
             value={password}
             secureTextEntry
           />
-          <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
+          <TouchableOpacity style={styles.registerButton} onPress={handleSignUp}>
             <Text style={styles.registerButtonText}>Register</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.backButton} onPress={() => router.push("LoginPage")}>

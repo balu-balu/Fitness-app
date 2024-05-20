@@ -1,10 +1,28 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Image,Alert } from 'react-native';
 import { useRouter } from "expo-router";
+import {auth} from "../firebase-config"
+import {signInWithEmailAndPassword} from "firebase/auth"
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
+
+  const handleLogin = async () => {
+    try {
+
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      Alert.alert("Амжилттай нэвтэрлээ", "Та амжилттай нэвтэрлээ!");
+      // Navigate to home or another page if needed
+      router.push("AuthHome");
+    } catch (error) {
+      Alert.alert("Нэвтрэх амжилтгүй боллоо", error.message);
+    }
+  };
   return (
     <ImageBackground
       source={require('../assets/images/background2.png')}
@@ -20,7 +38,9 @@ const Login = () => {
           <TextInput
             style={styles.input}
             placeholder="Email"
-            onChangeText={setEmail}
+            onChangeText={(email) => {
+              setEmail(email);
+            }}
             value={email}
             keyboardType="email-address"
             autoCapitalize="none"
@@ -28,11 +48,13 @@ const Login = () => {
           <TextInput
             style={styles.input}
             placeholder="Password"
-            onChangeText={setPassword}
+            onChangeText={(password) => {
+              setPassword(password);
+            }}
             value={password}
             secureTextEntry
           />
-          <TouchableOpacity style={styles.loginButton} onPress={() => router.push("AuthHome")}>
+          <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
             <Text style={styles.loginButtonText}>Login</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.signupButton} onPress={() => router.push("RegisterPage")}>

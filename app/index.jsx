@@ -1,5 +1,5 @@
-import React from "react";
-import { View, Text, Image } from "react-native";
+import React ,{useState,useEffect}from "react";
+import { View, Text, Image ,Alert} from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -12,9 +12,20 @@ import {
   TouchableOpacity,
   GestureHandlerRootView
 } from "react-native-gesture-handler";
-
+import {auth} from "../firebase-config";
+import {onAuthStateChanged} from "firebase/auth";
 export default function index() {
   const router = useRouter();
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+      if (initializing) setInitializing(false);
+    });
+    return unsubscribe; // unsubscribe on unmount
+  }, [initializing]);
   return (
     <GestureHandlerRootView>
       <View className="flex-1 flex justify-end">

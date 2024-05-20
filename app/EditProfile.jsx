@@ -2,24 +2,38 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+
 const EditProfile = () => {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [profileName, setProfileName] = useState('John Doe'); // Initial profile name
+  const [profileEmail, setProfileEmail] = useState('john.doe@example.com'); // Initial profile email
   const router = useRouter();
+
+  const handleSaveChanges = () => {
+    // Update profileName and profileEmail states
+    setProfileName(fullName || profileName); // Update profileName only if fullName is not empty
+    setProfileEmail(email || profileEmail); // Update profileEmail only if email is not empty
+
+    // Clear input fields after saving changes
+    setFullName('');
+    setEmail('');
+    setNewPassword('');
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()}
-        style={styles.backButton}>
+        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Edit Profile</Text>
       </View>
       <View style={styles.profileInfo}>
         <Image source={require('../assets/images/profile.png')} style={styles.profileImage} />
-        <Text style={styles.profileName}>John Doe</Text>
-        <Text style={styles.profileEmail}>john.doe@example.com</Text>
+        <Text style={styles.profileName}>{profileName}</Text>
+        <Text style={styles.profileEmail}>{profileEmail}</Text>
       </View>
       <View style={styles.inputContainer}>
         <Ionicons name="person-outline" size={24} color="black" style={styles.inputIcon} />
@@ -51,7 +65,7 @@ const EditProfile = () => {
           secureTextEntry
         />
       </View>
-      <TouchableOpacity style={styles.saveButton}>
+      <TouchableOpacity style={styles.saveButton} onPress={handleSaveChanges}>
         <Text style={styles.buttonText}>Save Changes</Text>
       </TouchableOpacity>
     </View>
